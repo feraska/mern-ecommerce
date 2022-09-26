@@ -1,0 +1,19 @@
+.user-data{
+    max-width: 500px;
+    border: 2px solid rgb(3, 165, 206);
+    border-radius: 5px;
+    padding: 30px;
+    margin: 50px auto;
+}
+.email ,.name{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+}
+button{
+    width: 70px;
+    background: #555;
+    color: white;
+    margin-left: 10px;
+}
