@@ -33,7 +33,7 @@ const Header = () => {
       ]
       const handleChange = (e) => { 
         localStorage.setItem('lang',e.target.value)
-        let loc = "http://localhost:3000/";
+        let loc = "/";
         window.location.replace(loc + "?lng=" + e.target.value);
         
     }

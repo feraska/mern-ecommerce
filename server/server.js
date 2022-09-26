@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
-const path = require('path')
+//const path = require('path')
 
 const app = express()
 app.use(express.json())
@@ -35,10 +35,14 @@ app.use('/api',require('./routes/upload'))
 app.use('/api',require('./routes/ProductRouter'))
 app.use('/api', require('./routes/paymentRouter'))
 if(process.env.NODE_ENV==="production"){
-    app.use(express.static('client/build'))
+    app.use('/',express.static('public'));
     app.get("*",(req,res)=>{
-        res.sendFile(path.join(__dirname,'client','build','index.html'))
+        res.sendFile(__dirname+"/public/index.html")
     })
+   
+}
+else{
+    app.get('*',(req,res)=>res.send("API running"))
 }
 const PORT = process.env.PORT || 5000
 app.listen(PORT,()=>{
