@@ -2,6 +2,8 @@ const Users = require('../models/userModlel')
 const Payments = require('../models/paymentModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require("nodemailer");
+
 const userCtrl = {
     register:async(req,res)=>{
         try{
@@ -169,9 +171,128 @@ const userCtrl = {
             res.status(500).json({msg:err.message})
             
         }
+    },
+    getCode:async(req,res,next)=>{
+        try{
+          const random = Math.floor(100000 + Math.random() * 900000).toString()
+          
+          const code = createAccessToken({code:random})
+          req.random = random
+          req.code = code
+          
+         next()
+        
+        }
+        catch(err){
+            return res.status(500).json({msg:err.message})
+        }
+    },
+    validCode:async(req,res,next)=>{
+        try{
+
+            const {codeEnc,codeDec} = req.query
+
+            let c 
+            jwt.verify(codeEnc,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+                if(err){
+                    return res.status(400).json({msg:"invalid code"})
+                }
+                c = user.code
+                // if(user.code!==codeEnc){
+                //     return res.status(404).json({msg:"invalid code"})
+                // }
+
+            //     c = user.code
+                
+                
+                
+             })
+            if(c!==codeDec){
+                return res.status(400).json({msg:"invalid code"})
+              }
+         
+         
+          next()
+        //  res.end()
+          
+          
+        }
+        
+          catch(err){
+           // console.log(err.message)
+              return res.status(500).json({msg:err.message})
+          }
+        },
+    getID:async(req,res,next)=>{
+        try{
+            const {email} = req.query
+            
+            const id =await Users.findOne({email:email}).select("_id")
+            if(!id){
+                return res.status(404).json({msg:"the user not found"})
+            }
+            req.id=id._id
+            req.email
+           next()
+
+        }
+        catch(err){
+            return res.status(500).json({msg:err.message})
+        }
+    },
+    sendEmail:async(req,res)=>{
+        const {email} = req.query
+        console.log(email)
+        // let testAccount = await nodemailer.createTestAccount();
+
+        let transporter = nodemailer.createTransport({
+            service:'gmail',
+            // host: "smtp.ethereal.email",
+            // port: 587,
+            // secure: false, // true for 465, false for other ports
+            auth: {
+              user: 'feras.94.kasabri@gmail.com', // generated ethereal user
+              pass: process.env.PASSWORD, // generated ethereal password
+            },
+          });
+       
+        const random = req.random
+        console.log(random)
+          // send mail with defined transport object
+          let info = await transporter.sendMail({
+            from: process.env.EMAIL, // sender address
+            to: email, // list of receivers
+            subject: "change password", // Subject line
+            text:"code", // plain text body
+            html: `<h1>${random}`, // html body
+          });
+        
+          console.log("Message sent: %s", info.messageId);
+          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        
+          // Preview only available when sending through an Ethereal account
+          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+           res.json({_id:req.id,code:req.code})
+        },
+    updatePassword:async(req,res)=>{
+        try {
+            const {_id,password} = req.body
+            console.log(_id)
+            const passwordHash = await bcrypt.hash(password,10)
+            await Users.findOneAndUpdate({_id:_id},{
+                password:passwordHash
+            })
+          
+            return res.json({msg:" password updated "})
+        } catch (err) {
+            res.status(500).json({msg:err.message})
+            
+        }
+    }   
     }
         
-}
+
 const createAccessToken = (user)=>{
     return jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1d'})
 }

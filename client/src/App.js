@@ -10,7 +10,7 @@ function App() {
   const { t } = useTranslation(); 
  
    
-  useMemo(()=>{
+  useEffect(()=>{
    
     if(localStorage.getItem('lang')==null){
         localStorage.setItem('lang','en')

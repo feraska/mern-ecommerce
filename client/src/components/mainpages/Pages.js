@@ -20,6 +20,7 @@ const Pages = () => {
  // console.log("logged",isLogged)
   return (
          <Routes>
+          <Route path='/?lng' element={<NotFound/>}/>
         <Route path='/' element={<Products/>} />
         <Route path='/user' element={isLogged?<UserData/>:<NotFound/>} />
         <Route path='/detail/:id' element={<DetailProduct/>} />
@@ -31,7 +32,7 @@ const Pages = () => {
         <Route path='/history' element={isLogged?<OrderHistory/>:<NotFound/>}/>
         <Route path='/history/:id' element={isLogged?<OrderDetails/>:<NotFound/>}/>
         <Route path='/cart' element={<Cart/>}/>
-        <Route path='/forgot-password' element={<ForgotPassword/>}/>
+        <Route path='/forgot-password' element={isLogged?<NotFound/>:<ForgotPassword/>}/>
         <Route path='*' element={<NotFound/>}/>
          </Routes>
        

@@ -5,6 +5,7 @@ import BtnRender from './BtnRender'
 import Loading from '../loading/Loading'
 const ProductItem = ({product,setProducts,isAdmin,token,callback,setCallback}) => {
   const [loading ,setLoding] = useState(false)
+  
   const deleteProduct = async () =>{
    try {
     setLoding(true)

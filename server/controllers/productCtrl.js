@@ -7,20 +7,21 @@ class APIfeatures{
     }
     filtering(){
         const queryObj = {...this.queryString}
-      //  console.log({before:queryObj})
+        
         const excludedFields = ['page','sort','limit']
         excludedFields.forEach(e1=>delete(queryObj[e1]))
       //  console.log({after:queryObj})
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g,match=>'$'+match)
-      //  console.log({queryObj,queryStr})
+       console.log(JSON.parse(queryStr))
+      
         this.query.find(JSON.parse(queryStr))
         return this
     }
     sorting(){
         if(this.queryString.sort){
             const sortBy = this.queryString.sort.split(',').join(' ')
-            console.log(sortBy)
+            console.log("sort",sortBy)
             this.query.sort(sortBy)
         }
         else{

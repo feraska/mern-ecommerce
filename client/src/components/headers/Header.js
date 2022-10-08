@@ -5,12 +5,14 @@ import {GlobalState} from '../../GlobalState'
 import Menu from './icon/menu.svg'
 import Close from './icon/close.svg'
 import Cart from './icon/cart.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
+import { useLocation } from 'react-router-dom'
+
 
 const Header = () => {
     
@@ -19,31 +21,47 @@ const Header = () => {
     //console.log('state',state)
     const [allproducts] = state.productsAPI.allProducts
     const [search,setSearch] = state.productsAPI.search
-    const [name] = state.userAPI.name 
+    const [name,setName] = state.userAPI.name 
     const [page, setPage] = state.productsAPI.page
     const [isLogged,setIsLogged] = state.userAPI.isLogged
     const [isAdmin,setIsAdmin] = state.userAPI.isAdmin
     const [cart] = state.userAPI.cart
+    const [lang,setLang] = useState('')
+    const navigate = useNavigate()
+    const [token,setToken] = state.token
     
+
+  
     const languages = [
         { value: '', text: t('options') },
         { value: 'en', text: "English" },
         { value: 'he', text: "עברית" },
         { value: 'ar', text: "العربيه "},
       ]
+      useEffect(()=>{
+        if(lang){
+        window.location.replace("?lng="+lang)
+        }
+      },[lang])
       const handleChange = (e) => { 
         localStorage.setItem('lang',e.target.value)
-        let loc = "/";
-        window.location.replace(loc + "?lng=" + e.target.value);
-        
+        setLang(e.target.value)
     }
-    //console.log("admin",isAdmin)
+
+   
+    
     
     const logoutUser = async() =>{
         await axios.get('/user/logout')
         localStorage.removeItem('firstLogin')
-        window.location.href = "/"
+       // setIsLogged(false)
+        //setIsAdmin(false)
+        
+         window.location.href = "/"
+        
+        //navigate("/")
         window.scrollTo(0,0)
+        
     }
     const adminRouter = ()=>{
         return(
@@ -135,7 +153,9 @@ const Header = () => {
             </div>
         }
         
-        <Autocomplete /*onKeyUp={searchHandler}*/ onSelect={searchHandler}
+        <Autocomplete /*onKeyUp={searchHandler}*/ /*onSelect={searchHandler}*/
+      disableCloseOnSelect
+      
       
       id="combo-box-demo"
       options={allproducts?[...allproducts]:[]}
@@ -154,7 +174,7 @@ const Header = () => {
           {option.title}
         </Box>
       )}
-      renderInput={(params) => <TextField {...params} label={t("products")}
+      renderInput={(params) => <TextField  {...params} label={t("products")}
       
       inputProps={{
         ...params.inputProps,
