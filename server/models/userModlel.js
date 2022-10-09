@@ -21,7 +21,10 @@ const userSchema = new mongoose.Schema({
     cart:{
         type:Array,
         default:[]
-    }
+    },images:{
+        type:Object,
+        
+    },
 
 
 },{

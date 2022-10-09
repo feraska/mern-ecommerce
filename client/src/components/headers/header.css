@@ -19,6 +19,10 @@ header{
    
    
 }
+.profile-img{
+    width:60px;
+    border-radius: 30px;
+}
 header .logo{
     flex: 1;
     

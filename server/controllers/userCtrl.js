@@ -172,6 +172,26 @@ const userCtrl = {
             
         }
     },
+    updateImg:async(req,res)=>{
+        try {
+            const {images} = req.body
+            const user = await Users.findById(req.user.id)
+            
+            
+            if(!user){
+                return res.status(400).json({msg:"User does not exist."})
+            }
+            
+            await Users.findOneAndUpdate({_id:req.user.id},{
+                images:images
+            })
+           
+            return res.json({msg:"updated "})
+        } catch (err) {
+            res.status(500).json({msg:err.message})
+            
+        }
+    },
     getCode:async(req,res,next)=>{
         try{
           const random = Math.floor(100000 + Math.random() * 900000).toString()

@@ -43,6 +43,7 @@ const DetailProduct = () => {
                     <p>{detailProduct.description}</p>
                     <p>{detailProduct.content}</p>
                     <p>Sold: {detailProduct.sold}</p>
+                    
                     <Link to="/cart" className="cart">
                         {t('buy')}
                     </Link>

@@ -1,5 +1,5 @@
 .user-data{
-    max-width: 500px;
+    max-width: 600px;
     border: 2px solid rgb(3, 165, 206);
     border-radius: 5px;
     padding: 30px;
@@ -10,6 +10,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 25px;
+}
+input[type='text'],[type='email']{
+    width:300px
 }
 button{
     width: 70px;

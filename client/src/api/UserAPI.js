@@ -12,6 +12,7 @@ const UserAPI = (token) => {
     const [callback, setCallback] = useState(false)
     const [name,setName] = useState('')
     const [email,setEmail] = useState('')
+    const [images,setImages] = useState('')
 
     useEffect(()=>{
         //console.log("token",token)
@@ -29,6 +30,7 @@ const UserAPI = (token) => {
                     setCart(res.data.cart)
                     setEmail(res.data.email)
                     setName(res.data.name)
+                    setImages(res.data.images)
                 } catch (err) {
                     alert(err.response.data.msg)
                 }
@@ -63,6 +65,7 @@ const UserAPI = (token) => {
     callback:[callback, setCallback],
     name:[name],
     email:[email],
+    images:[images]
   }
 }
 

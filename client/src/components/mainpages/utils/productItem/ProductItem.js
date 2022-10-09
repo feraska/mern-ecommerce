@@ -52,6 +52,7 @@ const ProductItem = ({product,setProducts,isAdmin,token,callback,setCallback}) =
             }</span>
             
             <p>{product.description}</p>
+            
         </div>
 
         <BtnRender product={product} deleteProduct={deleteProduct}/>

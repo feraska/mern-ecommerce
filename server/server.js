@@ -5,8 +5,16 @@ const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 //const path = require('path')
-
 const app = express()
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
+io.on('connection',socket=>{
+    console.log(socket.id+' connected.')
+    socket.on('disconnect',()=>{
+        console.log(socket.id+' disconnected.')
+    })
+})
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
@@ -45,6 +53,6 @@ else{
     app.get('*',(req,res)=>res.send("API running"))
 }
 const PORT = process.env.PORT || 5000
-app.listen(PORT,()=>{
+http.listen(PORT,()=>{
     console.log('Server is running on port',PORT)
 })
