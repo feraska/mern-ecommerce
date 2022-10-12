@@ -27,6 +27,8 @@ const CreateProduct = () => {
     const param = useParams()
     const [products] = state.productsAPI.products
     const [onEdit, setOnEdit] = useState(false)
+    const [showMsg,setShowmsg] = useState("")
+
     useEffect(()=>{
         if(param.id){
             setOnEdit(true)

@@ -10,6 +10,7 @@ const Cart = () => {
   const [callback,setCallback] = state.userAPI.callback
   const [token] = state.token
   const { t } = useTranslation(); 
+  const [showMsg,setShowmsg] = useState("")
 
   useEffect(()=>{
     const getTotal = ()=>{
@@ -64,7 +65,8 @@ const Cart = () => {
 
     setCart([])
     addToCart([])
-    alert(t('succorder'))
+   // alert(t('succorder'))
+   setShowmsg(t('succorder'))
     //setCallback(!callback)
 }
 
@@ -111,7 +113,7 @@ const Cart = () => {
             :total
           }</h3>
         <button  onClick={()=>tranSuccess()}>{t('payment')}</button>
-
+        <label>{showMsg}</label>
       </div>
     </div>
   )

@@ -8,12 +8,48 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const commentCtrl = require('./controllers/commentCtrl')
+let users = []
 io.on('connection',socket=>{
     console.log(socket.id+' connected.')
+    socket.on('joinRoom',id=>{
+        const user = {userId:socket.id,room:id}
+        
+        const check = users.every(user=>user.userId!==socket.id)
+        if(check){
+            users.push(user)
+            socket.join(user.room)
+        }
+        else{
+        users.map(user=>{
+            if(user.userId === socket.id){
+                if(user.room !== id){
+                    socket.leave(user.room)
+                    socket.join(id)
+                    user.room = id
+            }
+        }
+        
+        })
+    }
+    // console.log("users",users)
+    })
+    socket.on('createComment',async msg=>{
+      //  console.log(msg)
+       await commentCtrl.addComment(msg)
+        const newComment = await commentCtrl.getCommentv2(msg)
+        const product_id = msg.product_id
+        io.to(product_id).emit('sendCommentToClient',newComment)
+       // console.log("commnets",newComment)
+     //  console.log(newComment)
+    })
+
+    
     socket.on('disconnect',()=>{
         console.log(socket.id+' disconnected.')
     })
 })
+
 
 app.use(express.json())
 app.use(cookieParser())
@@ -42,6 +78,7 @@ app.use('/api',require('./routes/categoryRouter'))
 app.use('/api',require('./routes/upload'))
 app.use('/api',require('./routes/ProductRouter'))
 app.use('/api', require('./routes/paymentRouter'))
+app.use('/api',require('./routes/commentRouter'))
 if(process.env.NODE_ENV==="production"){
     app.use('/',express.static('public'));
     app.get("*",(req,res)=>{

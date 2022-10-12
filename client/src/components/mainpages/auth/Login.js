@@ -4,11 +4,15 @@ import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { GlobalState } from '../../../GlobalState'
-
+import success from '../../headers/icon/success.gif'
+import { io } from 'socket.io-client'
 const Login = () => {
   const {t} = useTranslation()
   const state = useContext(GlobalState)
   const [token,setToken] = state.token
+  const [socket,setSocket] = state.socket
+  const [showMsg,setShowmsg] = useState("")
+  const [showImage,setShowImage] = useState(false)
   //const [callback,setCallback] = state.userAPI.callback
   const navigate = useNavigate()
  // const [firstLogin,setFirstLogin] = useState(localStorage.getItem("firstLogin")||"")
@@ -33,16 +37,27 @@ const Login = () => {
   const loginSubmit = async(e)=>{
     e.preventDefault()
     try {
-      await axios.post('/user/login',{...user})
+    const res =  await axios.post('/user/login',{...user})
       localStorage.setItem('firstLogin',true)
+      
+      setShowmsg(res.data.msg)
+      setShowImage(true)
+      // const sockettemp = io()
+      // setSocket(sockettemp)
+      // console.log(socket)
      // setFirstLogin(true)
       //setToken(login.data.accesstoken)
      // navigate("/")
+     setTimeout(() => {
+      setShowImage(false)
       window.location.href='/'
+     }, 3000);
+     
     
       
     } catch (err) {
-      alert(err.response.data.msg)
+    //  alert(err.response.data.msg)
+    setShowmsg(err.response.data.msg)
     }
   }
 
@@ -60,6 +75,11 @@ const Login = () => {
           <Link to='/forgot-password'>{t('forgotPassword')}</Link>
         </div>
       </form>
+      <label>{showMsg}</label>
+      {
+              showImage&&
+            < img src={success} style={{width:'150px'}}/>
+            }
     </div>
   )
 }

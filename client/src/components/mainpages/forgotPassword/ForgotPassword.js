@@ -14,6 +14,7 @@ const ForgotPassword = () => {
     const [key,setKey] = useState(false)
     const {t} = useTranslation()
     const [loading,setLoading] = useState(false)
+    const [showMsg,setShowmsg] = useState("")
     const content=()=>{
       if(success){
         return(
@@ -53,7 +54,8 @@ const ForgotPassword = () => {
           setLoading(true)
           const res = await axios.patch(`/user/updatePassword`,{_id:ID,password})
           setLoading(false)
-          alert(res.data.msg)
+          //alert(res.data.msg)
+          setShowmsg(res.data.msg)
 
          }
          else
@@ -75,7 +77,8 @@ const ForgotPassword = () => {
         }
       }
       catch(err){
-        alert(err.response.data.msg)
+        //alert(err.response.data.msg)
+        setShowmsg(err.response.data.msg)
       }
       
     }
@@ -86,10 +89,12 @@ const ForgotPassword = () => {
    
     <div className="user-data">
       {
-        loading?<Loading/>:content()
+        content()
         
       }
       <button onClick={clickHandler}>{t('send')}</button>
+      <br/><br/>
+      <label>{showMsg}</label>
     
     </div>
   

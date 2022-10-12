@@ -13,7 +13,7 @@ class APIfeatures{
       //  console.log({after:queryObj})
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g,match=>'$'+match)
-       console.log(JSON.parse(queryStr))
+     
       
         this.query.find(JSON.parse(queryStr))
         return this
@@ -21,7 +21,7 @@ class APIfeatures{
     sorting(){
         if(this.queryString.sort){
             const sortBy = this.queryString.sort.split(',').join(' ')
-            console.log("sort",sortBy)
+            
             this.query.sort(sortBy)
         }
         else{

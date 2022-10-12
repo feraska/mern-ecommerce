@@ -13,6 +13,8 @@ const Categories = () => {
     const [callback,setCallback] = state.categoriesAPI.callback
     const [onEdit, setOnEdit] = useState(false)
     const [id, setID] = useState('')
+    const [showMsg,setShowmsg] = useState("")
+
     const createCategory = async(e) =>{
         e.preventDefault()
         try {
@@ -20,13 +22,15 @@ const Categories = () => {
                 const res = await axios.put(`/api/category/${id}`,{name:category},{
                     headers:{Authorization:token}
                 })
-                alert(res.data.msg)
+                //alert(res.data.msg)
+                setShowmsg(res.data.msg)
+
             }
             else{
                 const res = await axios.post('/api/category',{name:category},{
                     headers:{Authorization:token}
                 })
-                alert(res.data.msg)
+                setShowmsg(res.data.msg)
                 
                 
             }
@@ -37,7 +41,8 @@ const Categories = () => {
             
            
         } catch (err) {
-            alert(err.response.data.msg)
+           // alert(err.response.data.msg)
+           setShowmsg(err.response.data.msg)
         }
     }
     const editCategory = async (id, name) =>{
@@ -50,11 +55,13 @@ const Categories = () => {
             const res = await axios.delete(`/api/category/${id}`,{
                 headers:{Authorization:token}
             })
-            alert(res.data.msg)
+            //alert(res.data.msg)
+            setShowmsg(res.data.msg)
             setCallback(!callback)
 
         } catch (err) {
-            alert(err.response.data.msg)
+           // alert(err.response.data.msg)
+           setShowmsg(err.response.data.msg)
             
         }
     }
@@ -82,6 +89,7 @@ const Categories = () => {
                 </div>
             ))
         }
+        <label>{showMsg}</label>
     </div>
 </div>
   )

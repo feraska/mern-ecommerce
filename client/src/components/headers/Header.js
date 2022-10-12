@@ -30,7 +30,7 @@ const Header = () => {
     const navigate = useNavigate()
     const [token,setToken] = state.token
     const [images] = state.userAPI.images
-
+    const [socket,setSocket] = state.socket
   
     const languages = [
         { value: '', text: t('options') },
@@ -61,6 +61,7 @@ const Header = () => {
         
         //navigate("/")
         window.scrollTo(0,0)
+       // return ()=>socket.close()
         
     }
     const adminRouter = ()=>{

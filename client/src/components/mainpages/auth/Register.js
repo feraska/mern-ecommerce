@@ -2,10 +2,11 @@ import React,{useState} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
-
+import success from '../../headers/icon/success.gif'
 const Register = () => {
   const {t} = useTranslation()
-
+  const [showImage,setShowImage] = useState(false)
+  const [showMsg,setShowmsg] = useState("")
   const [user, setUser] = useState({
     name:'', email:'', password: ''
 })
@@ -18,13 +19,21 @@ const registerSubmit = async (e) =>{
   e.preventDefault()
   try {
      const res= await axios.post('/user/register', {...user})
-
+    // if(res){
+      setShowImage(true)
+   //  }
+      setShowmsg(res.data.msg)
       //localStorage.setItem('firstLogin', true)
-      alert(res.data.msg)
+      //alert(res.data.msg)
+      setTimeout(() => {
+        setShowImage(false)
+        window.location.href = "/";
+      }, 3000);
       
-      window.location.href = "/";
+    
   } catch (err) {
-      alert(err.response.data.msg)
+      //alert(err.response.data.msg)
+      setShowmsg(err.response.data.msg)
   }
 }
 
@@ -40,12 +49,19 @@ const registerSubmit = async (e) =>{
 
                 <input type="password" name="password" required autoComplete="on"
                 placeholder="Password" value={user.password} onChange={onChangeInput} />
-
+      
                 <div className="row">
+                   
                     <button type="submit">{t('register')}</button>
                     <Link to="/login">{t('login')}</Link>
+      
                 </div>
             </form>
+            <label>{showMsg}</label>
+            {
+              showImage&&
+            < img src={success} style={{width:'150px'}}/>
+            }
         </div>
   )
 }

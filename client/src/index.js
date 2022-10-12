@@ -10,7 +10,7 @@ root.render(
     <Suspense fallback="...loading">
     <App />
     </Suspense>
-    // </React.StrictMode>
+    //  </React.StrictMode>
     
 );
 

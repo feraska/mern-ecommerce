@@ -3,9 +3,11 @@ import React,{useContext, useState} from 'react'
 import {Link} from 'react-router-dom'
 import BtnRender from './BtnRender'
 import Loading from '../loading/Loading'
+
+
 const ProductItem = ({product,setProducts,isAdmin,token,callback,setCallback}) => {
   const [loading ,setLoding] = useState(false)
-  
+  const [showMsg,setShowmsg] = useState("")
   const deleteProduct = async () =>{
    try {
     setLoding(true)
@@ -22,7 +24,8 @@ const ProductItem = ({product,setProducts,isAdmin,token,callback,setCallback}) =
     
     
    } catch (err) {
-      alert(err.response.data.msg)
+    //  alert(err.response.data.msg)
+    setShowmsg(err.response.data.msg)
    }
   }
   if(loading){
@@ -56,6 +59,7 @@ const ProductItem = ({product,setProducts,isAdmin,token,callback,setCallback}) =
         </div>
 
         <BtnRender product={product} deleteProduct={deleteProduct}/>
+        <label>{showMsg}</label>
         </div>
   )
 }

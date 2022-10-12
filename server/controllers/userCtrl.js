@@ -60,7 +60,7 @@ const userCtrl = {
             path:'/user/refresh_token'
            })
            //res.json({msg:"Register Success!"})
-           res.json({accesstoken})
+          return res.status(200).json({msg:"login successfull"})
         }
         catch(err){
             //console.log(err.message)
@@ -262,7 +262,7 @@ const userCtrl = {
     },
     sendEmail:async(req,res)=>{
         const {email} = req.query
-        console.log(email)
+       // console.log(email)
         // let testAccount = await nodemailer.createTestAccount();
 
         let transporter = nodemailer.createTransport({
@@ -277,7 +277,7 @@ const userCtrl = {
           });
        
         const random = req.random
-        console.log(random)
+       // console.log(random)
           // send mail with defined transport object
           let info = await transporter.sendMail({
             from: process.env.EMAIL, // sender address
@@ -287,18 +287,18 @@ const userCtrl = {
             html: `<h1>${random}`, // html body
           });
         
-          console.log("Message sent: %s", info.messageId);
+          //console.log("Message sent: %s", info.messageId);
           // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
         
           // Preview only available when sending through an Ethereal account
-          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+         // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
           // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
            res.json({_id:req.id,code:req.code})
         },
     updatePassword:async(req,res)=>{
         try {
             const {_id,password} = req.body
-            console.log(_id)
+          //  console.log(_id)
             const passwordHash = await bcrypt.hash(password,10)
             await Users.findOneAndUpdate({_id:_id},{
                 password:passwordHash
