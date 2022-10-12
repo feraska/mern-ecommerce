@@ -9,12 +9,14 @@ import CommentItem from '../utils/commentItem/CommentItem'
 import axios from 'axios'
 import Loading from '../utils/loading/Loading'
 const DetailProduct = () => {
+
     const { t } = useTranslation(); 
     const [rating, setRating] = useState(0)
     const [comments, setComments] = useState([])
     const [loading, setLoading] = useState(false)
     const params = useParams()
     const state = useContext(GlobalState)
+    const addCart = state.userAPI.addCart
     const [products] = state.productsAPI.products
     const [detailProduct,setDetailProduct] = useState([])
     const [socket] = state.socket
@@ -23,7 +25,7 @@ const DetailProduct = () => {
     const [isLogged] = state.userAPI.isLogged
     const getComment = async(id) =>{
         setLoading(true)
-        console.log(id)
+       
         const comment = await axios.get(`/api/comments/${id}?limit=${page*3}`)
         // console.log(comment)
         // console.log(comment)
@@ -83,7 +85,7 @@ const DetailProduct = () => {
                     <p>{detailProduct.description}</p>
                     <p>{detailProduct.content}</p>
                     <p>Sold: {detailProduct.sold}</p>
-                    <Link to="/cart" className="cart">
+                    <Link to="/cart" className="cart"  onClick={() => addCart(detailProduct)}>
                         {t('buy')}
                     </Link>
                     <div>

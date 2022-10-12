@@ -39,7 +39,10 @@ const UserAPI = (token) => {
         }
     },[token,callback])
     const addCart = async (product) => {
-        if(!isLogged) return alert(t('loginMsg'))
+        if(!isLogged)
+        {
+         return alert(t('loginMsg'))
+        }
 
         const check = cart.every(item =>{
             return item._id !== product._id
