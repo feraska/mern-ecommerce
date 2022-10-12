@@ -23,7 +23,7 @@ const Cart = () => {
   },[cart])
   
 
-  const addToCart = async ()=>{
+  const addToCart = async (cart)=>{
     await axios.patch('/user/addCart',{cart},{
       headers:{Authorization:token}
     })
@@ -35,7 +35,7 @@ const Cart = () => {
       }
     })
     setCart([...cart])
-    addToCart()
+    addToCart(cart)
   }
 
   const decrement = (id)=>{
@@ -45,17 +45,20 @@ const Cart = () => {
       }
     })
     setCart([...cart])
+    addToCart(cart)
+
   }
   const removeProduct = (id)=>{
     if(window.confirm(t('deleteMsg'))){
       cart.forEach((item,index)=>{
         if(item._id===id){
          // console.log(index)
+
           cart.splice(index,1)
         }
       })
       setCart([...cart])
-      addToCart()
+      addToCart(cart)
     }
   }
   const tranSuccess = async() => {
@@ -71,7 +74,7 @@ const Cart = () => {
 }
 
   if(cart.length ===0){
-    return <h2 style={{textAlign:"center",fontSize:"5rem"}}>Cart Empty</h2>
+    return <h2 style={{textAlign:"center",fontSize:"5rem"}}>{t('cartEmpy')}</h2>
   }
   return (
     <div>

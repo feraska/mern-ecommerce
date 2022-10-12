@@ -16,7 +16,6 @@ const UserData = () => {
     const [callback,setCallback] = state.userAPI.callback
     // const [img] = state.userAPI.images.url
     const [images, setImages] = useState(false)
-    console.log(state.userAPI.images)
     const [loading, setLoading] = useState(false)
     const [onEditImage, setOnEditImage] = useState(false)
 
@@ -153,7 +152,7 @@ const UserData = () => {
         <button style=
         {
           onEditImage?{display:'block'}:{display:'none'}
-        } onClick={handleSubmit}>Change Image</button>
+        } onClick={handleSubmit}>{t('changeImage')}</button>
         
         <div className="upload">
         <input type="file" name="file" id="file_up" onChange={handleUpload}  />

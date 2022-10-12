@@ -121,6 +121,7 @@ const userCtrl = {
             
         }
     },
+    
     history:async(req,res)=>{
         try {
             const history = await Payments.find({user_id: req.user.id})
